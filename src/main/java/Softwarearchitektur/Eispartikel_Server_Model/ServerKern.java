@@ -7,14 +7,28 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Diese Klasse ist der Grundbaustein des Servers. Hier werden alle langlebigen
+ * Objekte verwaltet.
+ * 
+ * @author Mario Kaulmann
+ * 
+ */
 public class ServerKern extends Thread {
 	/*
 	 * Liste der Stationen
 	 */
 	private ConcurrentHashMap<String, Station> stationen;
-	
-	private LinkedList<ObjectOutputStream> verbindungen; 
 
+	/*
+	 * Liste der Verbindungen zu den Clients
+	 */
+	private LinkedList<ObjectOutputStream> verbindungen;
+
+	/**
+	 * Konstruktor fuer einen Serverkern. Hier werden die langlebigen Objekte
+	 * erzeugt.
+	 */
 	public ServerKern() {
 		this.stationen = new ConcurrentHashMap<String, Station>();
 		this.verbindungen = new LinkedList<ObjectOutputStream>();
@@ -22,6 +36,10 @@ public class ServerKern extends Thread {
 		sg.generiereStationen();
 	}
 
+	/*
+	 * In der run-Methode werden neue Verbindungen angenommen und
+	 * Clientbearbeitungsthreads erzeugt.
+	 */
 	public void run() {
 		ServerSocket serverSocket = null;
 		Socket newConnection = null;

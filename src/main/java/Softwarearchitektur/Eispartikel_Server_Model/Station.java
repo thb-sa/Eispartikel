@@ -23,7 +23,7 @@ public class Station implements Serializable {
 	 * Diese Hashmap enthaelt alle einem Datum zugeordneten aktuellen Werte der
 	 * Eispartikelkonzentrationen.
 	 */
-	private ConcurrentHashMap<Long, Integer> aktuelleWerte;
+	private ConcurrentHashMap<String, Integer> aktuelleWerte;
 
 	/**
 	 * Dieser Konstruktor wird genutzt um eine neue Station zum System
@@ -35,7 +35,7 @@ public class Station implements Serializable {
 	 *            Vorgabe des Eispartikelwerts
 	 */
 	public Station(String stationID, int vorgabewert) {
-		aktuelleWerte = new ConcurrentHashMap<Long, Integer>();
+		aktuelleWerte = new ConcurrentHashMap<String, Integer>();
 		setVorgabewert(vorgabewert);
 		setStationID(stationID);
 	}
@@ -56,11 +56,12 @@ public class Station implements Serializable {
 		this.vorgabewert = vorgabewert;
 	}
 
-	public ConcurrentHashMap<Long, Integer> getAktuelleWerte() {
+	public ConcurrentHashMap<String, Integer> getAktuelleWerte() {
 		return aktuelleWerte;
 	}
 
-	public void setAktuelleWerte(ConcurrentHashMap<Long, Integer> aktuelleWerte) {
+	public void setAktuelleWerte(
+			ConcurrentHashMap<String, Integer> aktuelleWerte) {
 		this.aktuelleWerte = aktuelleWerte;
 	}
 }

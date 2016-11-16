@@ -16,6 +16,12 @@ public class StationGenerator {
 	// HashMap mit den Staionen
 	private ServerKern server;
 
+	/**
+	 * Konstruktor des Stationgenerators.
+	 * 
+	 * @param server
+	 *            Serverobjekt fuer das die Stationen generiert werden.
+	 */
 	StationGenerator(ServerKern server) {
 		this.server = server;
 	}
@@ -66,7 +72,8 @@ public class StationGenerator {
 							Station s = new Station(name, vorgabe.nextInt(100));
 							vorhanden.add(name);
 							server.getStationen().put(name, s);
-							for(ObjectOutputStream o : server.getVerbindungen()){
+							for (ObjectOutputStream o : server
+									.getVerbindungen()) {
 								try {
 									o.writeObject(s);
 								} catch (IOException e) {
