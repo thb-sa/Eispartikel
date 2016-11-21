@@ -34,6 +34,7 @@ public class ServerKern extends Thread implements Stationenverwalter,
 		this.stationen = new ConcurrentHashMap<String, Station>();
 		this.verbindungen = new ConcurrentHashMap<Socket, ObjectOutputStream>();
 		StationGenerator sg = new StationGenerator(this);
+		new AenderungsServer(this).start();
 		sg.generiereStationen();
 	}
 
@@ -118,5 +119,14 @@ public class ServerKern extends Thread implements Stationenverwalter,
 			hinzugefuegt = false;
 		}
 		return hinzugefuegt;
+	}
+
+	public void aendereWert(String stationID, String datum, int wert) {
+		/*
+		 * Falls vorhanden wird der Wert ueberschrieben, der eingetragen ist.
+		 */
+		stationen.get(stationID).getAktuelleWerte().put(datum, wert);
+		System.out.println("Werte Empfangen: " + stationID + ": " + datum
+				+ " --> " + wert);
 	}
 }

@@ -24,4 +24,16 @@ public interface Stationenverwalter {
 	 *         nicht hinzugefuegt
 	 */
 	public boolean fuegeStationHinzu(String name, int vorgabewert);
+
+	/**
+	 * Aendere den aktuellen Wert fuer eine Station an einem Tag.
+	 * 
+	 * @param stationID
+	 *            , ID der Station = Name der Station
+	 * @param datum
+	 *            , Datum fuer das der WErt eingetragen werden soll
+	 * @param wert
+	 *            , Wert der Eispartikelkonzentration
+	 */
+	public void aendereWert(String stationID, String datum, int wert);
 }

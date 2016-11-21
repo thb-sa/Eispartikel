@@ -15,11 +15,17 @@ public class Test {
 			newConnection = new Socket("127.0.0.1", 7000);
 			ObjectInputStream ois = new ObjectInputStream(
 					newConnection.getInputStream());
-			 while (true){
-			Station std = (Station) ois.readObject();
-			 if(std == null) break;
-			System.out.println(std.getStationID() + " " + std.getVorgabewert());
-			 }
+			while (true) {
+				Station std = (Station) ois.readObject();
+				if (std == null)
+					break;
+				System.out.println(std.getStationID() + " "
+						+ std.getVorgabewert());
+				for (String key : std.getAktuelleWerte().keySet()) {
+					System.out.println("\t" + key + " "
+							+ std.getAktuelleWerte().get(key));
+				}
+			}
 			newConnection.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
