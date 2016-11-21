@@ -14,7 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Mario Kaulmann
  * 
  */
-public class ServerKern extends Thread {
+public class ServerKern extends Thread implements Stationenverwalter,
+		Kommunikationsverwalter<Station> {
 	/*
 	 * Liste der Stationen
 	 */
@@ -23,7 +24,7 @@ public class ServerKern extends Thread {
 	/*
 	 * Liste der Verbindungen zu den Clients
 	 */
-	private LinkedList<ObjectOutputStream> verbindungen;
+	private ConcurrentHashMap<Socket, ObjectOutputStream> verbindungen;
 
 	/**
 	 * Konstruktor fuer einen Serverkern. Hier werden die langlebigen Objekte
@@ -31,7 +32,7 @@ public class ServerKern extends Thread {
 	 */
 	public ServerKern() {
 		this.stationen = new ConcurrentHashMap<String, Station>();
-		this.verbindungen = new LinkedList<ObjectOutputStream>();
+		this.verbindungen = new ConcurrentHashMap<Socket, ObjectOutputStream>();
 		StationGenerator sg = new StationGenerator(this);
 		sg.generiereStationen();
 	}
@@ -67,11 +68,55 @@ public class ServerKern extends Thread {
 		this.stationen = stationen;
 	}
 
-	public LinkedList<ObjectOutputStream> getVerbindungen() {
-		return verbindungen;
+	public void fuegeVerbindunghinzu(Socket socket) throws IOException {
+		verbindungen.put(socket,
+				new ObjectOutputStream(socket.getOutputStream()));
+		for (String schluessel : stationen.keySet()) {
+			try {
+				versende(stationen.get(schluessel), socket);
+			} catch (IOException e) {
+				verbindungen.remove(socket);
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public void setVerbindungen(LinkedList<ObjectOutputStream> verbindungen) {
-		this.verbindungen = verbindungen;
+	public void versende(Station t, Socket s) throws IOException {
+		verbindungen.get(s).writeObject(t);
+	}
+
+	public boolean fuegeStationHinzu(String name, int vorgabewert) {
+		boolean hinzugefuegt;
+		/*
+		 * Das Hinzufuegen wird nur dann ausgefuehrt, wenn nicht bereits eine
+		 * Station mit dem entsprechenden Namen bereits existiert
+		 */
+		if (!stationen.containsKey(name)) {
+			Station station = new Station(name, vorgabewert);
+			stationen.put(name, station);
+			hinzugefuegt = true;
+			/*
+			 * Versenden der neuen station an alle angemeldeten Clients. Merken
+			 * der Verbindungen, die nicht mehr funktionieren zum Entfernen.
+			 */
+			LinkedList<Socket> alteVerbindungen = new LinkedList<Socket>();
+			for (Socket s : verbindungen.keySet()) {
+				try {
+					versende(station, s);
+				} catch (IOException e) {
+					System.out.println("Eine Clientverbindung wurde entfernt.");
+					alteVerbindungen.add(s);
+				}
+			}
+			/*
+			 * Entfernen der alten Verbindungen.
+			 */
+			for (Socket s : alteVerbindungen) {
+				verbindungen.remove(s);
+			}
+		} else {
+			hinzugefuegt = false;
+		}
+		return hinzugefuegt;
 	}
 }

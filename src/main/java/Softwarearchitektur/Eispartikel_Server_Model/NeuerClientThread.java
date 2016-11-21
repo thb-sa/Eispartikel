@@ -1,7 +1,6 @@
 package Softwarearchitektur.Eispartikel_Server_Model;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -18,7 +17,7 @@ public class NeuerClientThread extends Thread {
 	/*
 	 * Serverobjekt, das den Thread startet
 	 */
-	private ServerKern server;
+	private Kommunikationsverwalter<Station> server;
 
 	/**
 	 * Konstruktor fuer einen Thread, der eine neue Verbindung zu einem Client
@@ -29,7 +28,8 @@ public class NeuerClientThread extends Thread {
 	 * @param server
 	 *            Serverinstanz, die den Thread startet
 	 */
-	public NeuerClientThread(Socket clientVerbindung, ServerKern server) {
+	public NeuerClientThread(Socket clientVerbindung,
+			Kommunikationsverwalter<Station> server) {
 		this.server = server;
 		this.clientVerbindung = clientVerbindung;
 	}
@@ -41,12 +41,7 @@ public class NeuerClientThread extends Thread {
 	 */
 	public void run() {
 		try {
-			ObjectOutputStream sender = new ObjectOutputStream(
-					clientVerbindung.getOutputStream());
-			for (String key : server.getStationen().keySet()) {
-				sender.writeObject(server.getStationen().get(key));
-			}
-			server.getVerbindungen().add(sender);
+			server.fuegeVerbindunghinzu(clientVerbindung);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
