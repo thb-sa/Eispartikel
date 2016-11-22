@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import datenKlassen.StationAenderung;
+
 /**
  * Diese Klasse dient der Bearbeitung einer konkreten Aenderung an einer
  * Station.

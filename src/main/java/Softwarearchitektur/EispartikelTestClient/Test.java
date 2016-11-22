@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import Softwarearchitektur.Eispartikel_Server_Model.Station;
+import datenKlassen.Station;
 
 public class Test {
 

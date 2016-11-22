@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import Softwarearchitektur.Eispartikel_Server_Model.StationAenderung;
+import datenKlassen.StationAenderung;
 
 public class TestAenderung {
 

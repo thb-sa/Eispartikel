@@ -3,6 +3,8 @@ package Softwarearchitektur.Eispartikel_Server_Model;
 import java.io.IOException;
 import java.net.Socket;
 
+import datenKlassen.Station;
+
 /**
  * Diese Klasse dient der Bearbeitung einer neuen Verbindung in einem Thread.
  * 

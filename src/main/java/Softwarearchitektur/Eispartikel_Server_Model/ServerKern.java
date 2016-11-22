@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import datenKlassen.Station;
+
 /**
  * Diese Klasse ist der Grundbaustein des Servers. Hier werden alle langlebigen
  * Objekte verwaltet.
