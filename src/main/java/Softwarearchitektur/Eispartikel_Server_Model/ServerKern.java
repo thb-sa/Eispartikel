@@ -131,4 +131,8 @@ public class ServerKern extends Thread implements Stationenverwalter,
 		System.out.println("Werte Empfangen: " + stationID + ": " + datum
 				+ " --> " + wert);
 	}
+
+	public int berechneDifferenz(String stationID, int aktuellerWert) {
+		return aktuellerWert - stationen.get(stationID).getVorgabewert();
+	}
 }

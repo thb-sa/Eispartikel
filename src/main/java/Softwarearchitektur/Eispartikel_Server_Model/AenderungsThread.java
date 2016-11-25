@@ -2,8 +2,10 @@ package Softwarearchitektur.Eispartikel_Server_Model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import datenKlassen.Aenderungsmeldung;
 import datenKlassen.StationAenderung;
 
 /**
@@ -44,9 +46,12 @@ public class AenderungsThread extends Thread {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
 					verbindung.getInputStream());
+			ObjectOutputStream out = new ObjectOutputStream(
+					verbindung.getOutputStream());
 			StationAenderung sa = (StationAenderung) ois.readObject();
-			ois.close();
 			verwalter.aendereWert(sa.getName(), sa.getDatum(), sa.getWert());
+			out.writeObject(new Aenderungsmeldung(sa.getName(), sa.getDatum(),
+					verwalter.berechneDifferenz(sa.getName(), sa.getWert())));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

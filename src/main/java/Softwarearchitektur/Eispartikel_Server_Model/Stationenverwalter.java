@@ -36,4 +36,15 @@ public interface Stationenverwalter {
 	 *            , Wert der Eispartikelkonzentration
 	 */
 	public void aendereWert(String stationID, String datum, int wert);
+
+	/**
+	 * Methode zum Berechnen der Abweichung eines Tageswerts.
+	 * 
+	 * @param stationID
+	 *            , ID der zu betrachtenden Station
+	 * @param aktuellerWert
+	 *            , aktueller Wert zur Berechnung der Differenz
+	 * @return Differenz aus aktuellerWert und Vorgabewert
+	 */
+	public int berechneDifferenz(String stationID, int aktuellerWert);
 }
