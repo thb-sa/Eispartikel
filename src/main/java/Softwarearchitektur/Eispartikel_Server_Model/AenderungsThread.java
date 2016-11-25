@@ -19,11 +19,13 @@ public class AenderungsThread extends Thread {
 	/*
 	 * Verbindung zum Client
 	 */
-	Socket verbindung;
+	private Socket verbindung;
 	/*
 	 * Verwaltung der Stationen
 	 */
-	Stationenverwalter verwalter;
+	private Kommunikationsverwalter<Aenderungsmeldung> komVerwalter;
+
+	private Stationenverwalter verwalter;
 
 	/**
 	 * Konstruktor fuer einen Aenderungsthread mit der Verbindung und dem
@@ -34,27 +36,44 @@ public class AenderungsThread extends Thread {
 	 * @param verwalter
 	 *            , Datenverwaltung
 	 */
-	public AenderungsThread(Socket verbindung, Stationenverwalter verwalter) {
+	public AenderungsThread(Socket verbindung,
+			Kommunikationsverwalter<Aenderungsmeldung> komVerwalter,
+			Stationenverwalter verwalter) {
 		this.verbindung = verbindung;
+		this.komVerwalter = komVerwalter;
 		this.verwalter = verwalter;
 	}
 
 	/*
 	 * In dieser Methode wird erreicht, dass die Werte neu gesetzt werden.
+	 * Ausserdem wird das Versenden der Aenderungen gestartet.
 	 */
 	public void run() {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
 					verbindung.getInputStream());
-			ObjectOutputStream out = new ObjectOutputStream(
-					verbindung.getOutputStream());
-			StationAenderung sa = (StationAenderung) ois.readObject();
-			verwalter.aendereWert(sa.getName(), sa.getDatum(), sa.getWert());
-			out.writeObject(new Aenderungsmeldung(sa.getName(), sa.getDatum(),
-					verwalter.berechneDifferenz(sa.getName(), sa.getWert())));
+			/*
+			 * Hinzufuegen einer neuen Verbindung
+			 */
+			komVerwalter.fuegeVerbindunghinzu(verbindung);
+			while (true) {
+				StationAenderung sa = (StationAenderung) ois.readObject();
+				/*
+				 * Berechnung der Abweichung
+				 */
+				int abweichung = verwalter.berechneDifferenz(sa.getName(),
+						sa.getWert());
+				komVerwalter.versende(
+						new Aenderungsmeldung(sa.getName(), sa.getDatum(),
+								abweichung), verbindung);
+				/*
+				 * Speichern des Wertes
+				 */
+				verwalter.aendereWert(sa.getName(), sa.getDatum(),
+						sa.getWert(), abweichung);
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Ein Client hat sich abgemeldet.");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

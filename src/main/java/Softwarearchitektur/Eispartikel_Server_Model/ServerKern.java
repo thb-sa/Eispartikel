@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import datenKlassen.Station;
+import datenKlassen.Tageswerte;
 
 /**
  * Diese Klasse ist der Grundbaustein des Servers. Hier werden alle langlebigen
@@ -115,7 +116,7 @@ public class ServerKern extends Thread implements Stationenverwalter,
 			 * Entfernen der alten Verbindungen.
 			 */
 			for (Socket s : alteVerbindungen) {
-				verbindungen.remove(s);
+				entferneverbindung(s);
 			}
 		} else {
 			hinzugefuegt = false;
@@ -123,16 +124,21 @@ public class ServerKern extends Thread implements Stationenverwalter,
 		return hinzugefuegt;
 	}
 
-	public void aendereWert(String stationID, String datum, int wert) {
+	public void aendereWert(String stationID, String datum, int wert, int abweichung) {
 		/*
 		 * Falls vorhanden wird der Wert ueberschrieben, der eingetragen ist.
 		 */
-		stationen.get(stationID).getAktuelleWerte().put(datum, wert);
+		stationen.get(stationID).getAktuelleWerte().put(datum, new Tageswerte(wert, abweichung));
 		System.out.println("Werte Empfangen: " + stationID + ": " + datum
 				+ " --> " + wert);
 	}
 
 	public int berechneDifferenz(String stationID, int aktuellerWert) {
 		return aktuellerWert - stationen.get(stationID).getVorgabewert();
+	}
+
+	public void entferneverbindung(Socket socket) {
+		verbindungen.remove(socket);
+		
 	}
 }

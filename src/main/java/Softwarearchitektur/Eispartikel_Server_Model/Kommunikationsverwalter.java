@@ -16,7 +16,7 @@ public interface Kommunikationsverwalter<T> {
 	 * 
 	 * @param socket
 	 *            Verbindung zu einem Client
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void fuegeVerbindunghinzu(Socket socket) throws IOException;
 
@@ -30,4 +30,12 @@ public interface Kommunikationsverwalter<T> {
 	 * @throws IOException
 	 */
 	public void versende(T t, Socket s) throws IOException;
+
+	/**
+	 * Diese Methode dient dem Entfernen einer Verbindung.
+	 * 
+	 * @param socket
+	 *            , Verbindung, die entfernt werden soll.
+	 */
+	public void entferneverbindung(Socket socket);
 }
