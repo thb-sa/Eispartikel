@@ -124,11 +124,16 @@ public class ServerKern extends Thread implements Stationenverwalter,
 		return hinzugefuegt;
 	}
 
-	public void aendereWert(String stationID, String datum, int wert, int abweichung) {
+	public void aendereWert(String stationID, String datum, int wert,
+			int abweichung, int relativeAbweichung) {
 		/*
 		 * Falls vorhanden wird der Wert ueberschrieben, der eingetragen ist.
 		 */
-		stationen.get(stationID).getAktuelleWerte().put(datum, new Tageswerte(wert, abweichung));
+		stationen
+				.get(stationID)
+				.getAktuelleWerte()
+				.put(datum,
+						new Tageswerte(wert, abweichung, relativeAbweichung));
 		System.out.println("Werte Empfangen: " + stationID + ": " + datum
 				+ " --> " + wert);
 	}
@@ -139,6 +144,11 @@ public class ServerKern extends Thread implements Stationenverwalter,
 
 	public void entferneverbindung(Socket socket) {
 		verbindungen.remove(socket);
-		
+
+	}
+
+	public int berechneRelativeAbweichung(String staionID, int abweichung) {
+		return (int) ((float) abweichung
+				/ stationen.get(staionID).getVorgabewert() * 100f);
 	}
 }

@@ -63,14 +63,20 @@ public class AenderungsThread extends Thread {
 				 */
 				int abweichung = verwalter.berechneDifferenz(sa.getName(),
 						sa.getWert());
+				/*
+				 * Berechnung der relativen Abweichung
+				 */
+				int relativeAbweichung = verwalter.berechneRelativeAbweichung(
+						sa.getName(), abweichung);
+
 				komVerwalter.versende(
 						new Aenderungsmeldung(sa.getName(), sa.getDatum(),
-								abweichung), verbindung);
+								abweichung, relativeAbweichung), verbindung);
 				/*
 				 * Speichern des Wertes
 				 */
 				verwalter.aendereWert(sa.getName(), sa.getDatum(),
-						sa.getWert(), abweichung);
+						sa.getWert(), abweichung, relativeAbweichung);
 			}
 		} catch (IOException e) {
 			System.out.println("Ein Client hat sich abgemeldet.");

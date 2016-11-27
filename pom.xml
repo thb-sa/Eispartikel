@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>com.github.thb-sa</groupId>
 			<artifactId>EispartikelKommunikationsBibliothek</artifactId>
-			<version>v0.4-beta</version>
+			<version>v0.42-beta</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

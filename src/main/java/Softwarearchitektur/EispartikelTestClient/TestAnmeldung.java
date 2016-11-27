@@ -77,8 +77,12 @@ public class TestAnmeldung {
 						+ key
 						+ " "
 						+ station.getAktuelleWerte().get(key)
-								.getAktuellerWert() + " / "
-						+ station.getAktuelleWerte().get(key).getAbweichung());
+								.getAktuellerWert()
+						+ " / "
+						+ station.getAktuelleWerte().get(key).getAbweichung()
+						+ " ==> "
+						+ station.getAktuelleWerte().get(key)
+								.getRelativeAbweichung());
 			}
 		}
 	}
