@@ -71,7 +71,7 @@ public class AenderungsThread extends Thread {
 
 				komVerwalter.versende(
 						new Aenderungsmeldung(sa.getName(), sa.getDatum(),
-								abweichung, relativeAbweichung), verbindung);
+								sa.getWert(), abweichung, relativeAbweichung), verbindung);
 				/*
 				 * Speichern des Wertes
 				 */

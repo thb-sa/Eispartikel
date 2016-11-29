@@ -28,14 +28,14 @@ public class TestAenderung {
 			 * die zu versendenden Typen.
 			 */
 			ZweiwegeClientkommunikator<Aenderungsmeldung, StationAenderung> zCK = new ZweiwegeClientkommunikator<Aenderungsmeldung, StationAenderung>(
-					"127.0.0.1", new NeuesObjektListener<Aenderungsmeldung>() {
+					"54.89.87.213", new NeuesObjektListener<Aenderungsmeldung>() {
 						/*
 						 * Anonyme Implementierung des Interfaces: kein guter
 						 * Stil, aber nur ein Beispiel
 						 */
 						public void neuesAustauschobjekt(
 								Aenderungsmeldung austauschobjekt) {
-							System.out.println(austauschobjekt.getAbweichung());
+							System.out.println(austauschobjekt.getTageswerte().getAbweichung());
 						}
 					}, ZweiwegeClientkommunikator.ZWEIWEGEKOMMUNIKATION);
 
@@ -47,7 +47,7 @@ public class TestAenderung {
 			/*
 			 * Hier wird jetzt beispielsweise eine StationsAenderung versendet.
 			 */
-			zCK.versende(new StationAenderung(args[0], args[1], 50));
+			zCK.versende(new StationAenderung(args[0], args[1], 76));
 
 			/*
 			 * Der Client lauft weiter, da er immernoch mithoert, was es fuer

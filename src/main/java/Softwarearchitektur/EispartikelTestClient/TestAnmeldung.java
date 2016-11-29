@@ -30,7 +30,7 @@ public class TestAnmeldung {
 			 * Klasse allerdings als Konstante hinterlegt ist.
 			 */
 			EinwegClientkommunikator<Station> ew = new EinwegClientkommunikator<Station>(
-					"127.0.0.1", listener,
+					"54.89.87.213", listener,
 					EinwegClientkommunikator.EINWEGKOMMUNIKATION);
 			/*
 			 * Sehr wichtig: den Thread starten.
