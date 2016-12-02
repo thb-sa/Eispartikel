@@ -125,7 +125,7 @@ public class ServerKern extends Thread implements Stationenverwalter,
 	}
 
 	public void aendereWert(String stationID, String datum, int wert,
-			int abweichung, int relativeAbweichung) {
+            int abweichung, int relativeAbweichung, Tageswerte.Darstellung darstellung) {
 		/*
 		 * Falls vorhanden wird der Wert ueberschrieben, der eingetragen ist.
 		 */
@@ -133,7 +133,7 @@ public class ServerKern extends Thread implements Stationenverwalter,
 				.get(stationID)
 				.getAktuelleWerte()
 				.put(datum,
-						new Tageswerte(wert, abweichung, relativeAbweichung));
+						new Tageswerte(wert, abweichung, relativeAbweichung, darstellung));
 		System.out.println("Werte Empfangen: " + stationID + ": " + datum
 				+ " --> " + wert);
 	}
@@ -150,5 +150,14 @@ public class ServerKern extends Thread implements Stationenverwalter,
 	public int berechneRelativeAbweichung(String staionID, int abweichung) {
 		return (int) ((float) abweichung
 				/ stationen.get(staionID).getVorgabewert() * 100f);
+	}
+
+	public Tageswerte.Darstellung berechneDarstellung(int relativeAbweichung) {
+		if (relativeAbweichung <= -10) {
+			return Tageswerte.Darstellung.NIEDRIG;
+		} else if (relativeAbweichung >= 5) {
+			return Tageswerte.Darstellung.HOCH;
+		}
+		return Tageswerte.Darstellung.NORMAL;
 	}
 }

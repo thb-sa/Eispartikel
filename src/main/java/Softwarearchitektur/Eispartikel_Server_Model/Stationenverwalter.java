@@ -1,5 +1,7 @@
 package Softwarearchitektur.Eispartikel_Server_Model;
 
+import datenKlassen.Tageswerte;
+
 /**
  * Dieses Interface sorgt dafuer, dass Methoden implementiert werden muessen,
  * die zum Verwalten einer Station notwendig sind, ohne dass die aufrufende
@@ -36,7 +38,7 @@ public interface Stationenverwalter {
 	 *            , Wert der Eispartikelkonzentration
 	 */
 	public void aendereWert(String stationID, String datum, int wert,
-			int abweichung, int relativeAbweichung);
+			int abweichung, int relativeAbweichung, Tageswerte.Darstellung darstellung);
 
 	/**
 	 * Methode zum Berechnen der Abweichung eines Tageswerts.
@@ -59,4 +61,13 @@ public interface Stationenverwalter {
 	 * @return relative Abweichung, abgeschnitten nach dem Komma
 	 */
 	public int berechneRelativeAbweichung(String stationID, int abweichung);
+
+	/**
+	 * Methode zur Berechnung der Darstellung
+	 *
+	 * @param relativeAbweichung
+	 *   		  , die relative Abweichung
+	 * @return die Darstellung
+	 */
+    public Tageswerte.Darstellung berechneDarstellung(int relativeAbweichung);
 }

@@ -2,11 +2,11 @@ package Softwarearchitektur.Eispartikel_Server_Model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import datenKlassen.Aenderungsmeldung;
 import datenKlassen.StationAenderung;
+import datenKlassen.Tageswerte;
 
 /**
  * Diese Klasse dient der Bearbeitung einer konkreten Aenderung an einer
@@ -69,14 +69,19 @@ public class AenderungsThread extends Thread {
 				int relativeAbweichung = verwalter.berechneRelativeAbweichung(
 						sa.getName(), abweichung);
 
+				/*
+				 * Berchnung der Darstellung
+				 */
+				Tageswerte.Darstellung darstellung = verwalter.berechneDarstellung(relativeAbweichung);
+
 				komVerwalter.versende(
 						new Aenderungsmeldung(sa.getName(), sa.getDatum(),
-								sa.getWert(), abweichung, relativeAbweichung), verbindung);
+								sa.getWert(), abweichung, relativeAbweichung, darstellung), verbindung);
 				/*
 				 * Speichern des Wertes
 				 */
 				verwalter.aendereWert(sa.getName(), sa.getDatum(),
-						sa.getWert(), abweichung, relativeAbweichung);
+						sa.getWert(), abweichung, relativeAbweichung, darstellung);
 			}
 		} catch (IOException e) {
 			System.out.println("Ein Client hat sich abgemeldet.");
